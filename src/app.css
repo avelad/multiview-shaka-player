@@ -1,0 +1,98 @@
+body {
+  background-color: #404953;
+  color: #FFFFFF;
+}
+
+#unsupported {
+  color: #e11616;
+  font-size: 48px;
+  text-align: center;
+}
+
+#inputs-container {
+  margin-bottom: 10px;
+}
+
+.input-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.input-container + .input-container {
+	margin-top: 10px;
+}
+
+.url-input {
+  flex: 1;
+  margin-right: 10px;
+  padding: 5px 12px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #24292e;
+  vertical-align: middle;
+  background-color: #ffffff;
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  outline: none;
+  box-shadow: rgba(225, 228, 232, 0.2) 0px 1px 0px 0px inset;
+
+}
+
+.url-input:focus {
+  border-color: #0366d6;
+  outline: none;
+  box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+}
+
+#add,
+#load,
+.delete {
+  display: inline-block;
+  outline: 0;
+  text-align: center;
+  cursor: pointer;
+  padding: 0px 16px;
+  border-radius: 2px;
+  min-width: 80px;
+  height: 32px;
+  background-color: rgb(0, 120, 212);
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  font-weight: 400;
+  box-sizing: border-box;
+  border: 1px solid rgb(0, 120, 212);
+}
+
+#add:hover,
+#load:hover,
+.delete:hover{
+  background-color: rgb(16, 110, 190);
+  border: 1px solid rgb(16, 110, 190);
+}
+
+#add {
+	margin-right: 20px;
+}
+
+#buttons-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+#players-container:not(.many-player-containers) {
+	left: 10%;
+	position: relative;
+  width: 80%;
+}
+
+.many-player-containers {
+  display: grid;
+  grid-auto-rows: minmax(100px, auto);
+  grid-gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+}
