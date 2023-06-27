@@ -27,6 +27,29 @@ function setupUI () {
   const playersContainer = document.createElement('div');
   playersContainer.id = 'players-container';
   document.body.appendChild(playersContainer);
+
+  const configContainer = document.createElement('div');
+  configContainer.id = 'config-container';
+  const maxLatencyLabel = document.createElement('label');
+  maxLatencyLabel.textContent = 'Live sync max latency';
+  const maxLatencyInput = document.createElement('input');
+  maxLatencyInput.id = 'max-latency-input';
+  maxLatencyInput.type = 'number';
+  maxLatencyInput.step = 0.05;
+  maxLatencyInput.classList.add('config-input');
+  maxLatencyInput.value = 0.5;
+  maxLatencyInput.min = 0;
+  maxLatencyInput.max = 20;
+  maxLatencyInput.addEventListener('change', function () {
+    const value = parseInt(maxLatencyInput.value, 10);
+    for (const player of players) {
+      player.configure('streaming.liveSyncMaxLatency', value);
+    }
+  })
+  configContainer.appendChild(maxLatencyLabel);
+  configContainer.appendChild(maxLatencyInput);
+  document.body.appendChild(configContainer);
+
 }
 
 function createInput (inputsContainer, value) {
@@ -34,6 +57,7 @@ function createInput (inputsContainer, value) {
   inputContainer.classList.add('input-container');
 
   const input = document.createElement('input');
+  input.type = 'url';
   input.classList.add('url-input')
   if (value) {
     input.value = value;
@@ -59,7 +83,7 @@ function loadPlayers () {
   while (playersContainer.firstChild){
     playersContainer.removeChild(playersContainer.firstChild);
   }
-  const inputs = document.querySelectorAll('input');
+  const inputs = document.querySelectorAll('input[type=url]');
   for (const input of inputs) {
     const url = input.value;
     if (!url) {
@@ -91,6 +115,7 @@ function createPlayer(videoContainer, video, url) {
   });
   const controls = ui.getControls();
   const player = controls.getPlayer();
+  const liveSyncMaxLatency = parseInt(document.getElementById('max-latency-input').value, 10);
   player.configure({
     manifest: {
       hls: {
@@ -102,7 +127,7 @@ function createPlayer(videoContainer, video, url) {
       useNativeHlsOnSafari: false,
       lowLatencyMode: true,
       liveSync: true,
-      liveSyncMaxLatency: 0.5,
+      liveSyncMaxLatency: liveSyncMaxLatency,
     },
   });
   player.load(url);

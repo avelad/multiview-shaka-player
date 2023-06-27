@@ -96,3 +96,11 @@ body {
   grid-gap: 10px;
   grid-template-columns: repeat(2, 1fr);
 }
+
+#config-container {
+  margin-top: 15px;
+}
+
+label + .config-input {
+  margin-left: 10px;
+}
