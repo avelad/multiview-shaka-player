@@ -66,6 +66,7 @@ function loadPlayers () {
       continue;
     }
     const videoContainer = document.createElement('div');
+    videoContainer.setAttribute('data-url', url);
     videoContainer.classList.add('player-container');
     const video = document.createElement('video');
     video.setAttribute('autoplay', true);
