@@ -95,7 +95,7 @@ function createPlayer(videoContainer, video, url) {
     manifest: {
       hls: {
         useSafariBehaviorForLive: false,
-        liveSegmentsDelay: 1.25,
+        liveSegmentsDelay: 1.5,
       },
     },
     streaming: {
