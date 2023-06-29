@@ -130,7 +130,7 @@ function createPlayer(videoContainer, video, url) {
       liveSyncMaxLatency: liveSyncMaxLatency,
     },
   });
-  player.load(url);
+  player.load(url.trim());
   return player;
 }
 
