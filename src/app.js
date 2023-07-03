@@ -118,6 +118,9 @@ function createPlayer(videoContainer, video, url) {
   const liveSyncMaxLatency = parseInt(document.getElementById('max-latency-input').value, 10);
   player.configure({
     manifest: {
+      dash:{
+        clockSyncUri: 'https://shaka-player-demo.appspot.com/time.txt',
+      },
       hls: {
         useSafariBehaviorForLive: false,
         liveSegmentsDelay: 1.5,
