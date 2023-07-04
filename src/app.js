@@ -1,7 +1,6 @@
 let players = [];
 
 function setupUI () {
-
   const inputsContainer = document.createElement('div');
   inputsContainer.id = 'inputs-container';
   document.body.appendChild(inputsContainer);
@@ -23,6 +22,11 @@ function setupUI () {
   loadButton.addEventListener('click', loadPlayers);
   buttonsContainer.appendChild(loadButton);
   document.body.appendChild(buttonsContainer);
+
+  const timeDiv  = document.createElement('div');
+  timeDiv.id = 'time';
+  updateTime(timeDiv);
+  document.body.appendChild(timeDiv);
 
   const playersContainer = document.createElement('div');
   playersContainer.id = 'players-container';
@@ -49,7 +53,6 @@ function setupUI () {
   configContainer.appendChild(maxLatencyLabel);
   configContainer.appendChild(maxLatencyInput);
   document.body.appendChild(configContainer);
-
 }
 
 function createInput (inputsContainer, value) {
@@ -72,6 +75,13 @@ function createInput (inputsContainer, value) {
   });
   inputContainer.appendChild(deleteButton);
   inputsContainer.appendChild(inputContainer);
+}
+
+function updateTime (element) {
+  element.textContent = new Date().toISOString();
+  setTimeout(function () {
+    updateTime(element);
+  }, 10);
 }
 
 function loadPlayers () {

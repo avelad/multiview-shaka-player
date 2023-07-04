@@ -81,7 +81,13 @@ body {
   align-items: center;
   display: flex;
   justify-content: center;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+}
+
+#time {
+  margin-bottom: 10px;
+  text-align: center;
+  width: 100%;
 }
 
 #players-container:not(.many-player-containers) {
