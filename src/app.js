@@ -151,6 +151,15 @@ function initApp() {
   shaka.polyfill.installAll();
   if (shaka.Player.isBrowserSupported()) {
     setupUI();
+    window.addEventListener('visibilitychange', function () {
+      if (!document.hidden) {
+        for (const player of players) {
+          if (player.isLive() && player.getMediaElement().muted) {
+            player.goToLive();
+          }
+        }
+      }
+    });
   } else {
     const unsupportedDiv = document.createElement('div');
     unsupportedDiv.id = 'unsupported';
