@@ -21,6 +21,11 @@ function setupUI () {
   loadButton.textContent = 'LOAD';
   loadButton.addEventListener('click', loadPlayers);
   buttonsContainer.appendChild(loadButton);
+  const unloadButton = document.createElement('button');
+  unloadButton.id = 'load';
+  unloadButton.textContent = 'UNLOAD';
+  unloadButton.addEventListener('click', unloadPlayers);
+  buttonsContainer.appendChild(unloadButton);
   document.body.appendChild(buttonsContainer);
 
   const timeDiv  = document.createElement('div');
@@ -82,6 +87,17 @@ function updateTime (element) {
   setTimeout(function () {
     updateTime(element);
   }, 10);
+}
+
+function unloadPlayers () {
+  while (players.length) {
+    const player = players.pop();
+    player.destroy();
+  }
+  const playersContainer = document.getElementById('players-container');
+  while (playersContainer.firstChild){
+    playersContainer.removeChild(playersContainer.firstChild);
+  }
 }
 
 function loadPlayers () {

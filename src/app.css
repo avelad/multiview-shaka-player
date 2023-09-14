@@ -49,6 +49,7 @@ body {
 
 #add,
 #load,
+#unload,
 .delete {
   display: inline-block;
   outline: 0;
@@ -73,7 +74,8 @@ body {
   border: 1px solid rgb(16, 110, 190);
 }
 
-#add {
+#add,
+#load {
 	margin-right: 20px;
 }
 
