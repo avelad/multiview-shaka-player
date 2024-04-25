@@ -160,6 +160,9 @@ function createPlayer(videoContainer, video, url) {
     },
   });
   player.load(url.trim());
+  player.addEventListener('loaded', () => {
+    video.play();
+  }, {once: true});
   return player;
 }
 
