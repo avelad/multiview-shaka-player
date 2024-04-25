@@ -145,7 +145,7 @@ function createPlayer(videoContainer, video, url) {
   player.configure({
     manifest: {
       dash:{
-        clockSyncUri: 'https://shaka-player-demo.appspot.com/time.txt',
+        clockSyncUri: 'https://time.akamai.com/?ms&amp;iso',
       },
       hls: {
         useSafariBehaviorForLive: false,
