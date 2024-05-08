@@ -145,7 +145,7 @@ function createPlayer(videoContainer, video, url) {
   player.configure({
     manifest: {
       dash:{
-        clockSyncUri: 'https://time.akamai.com/?ms&amp;iso',
+        clockSyncUri: 'https://time.akamai.com/?ms&iso',
       },
       hls: {
         useSafariBehaviorForLive: false,
