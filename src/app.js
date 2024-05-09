@@ -46,7 +46,7 @@ function setupUI () {
   maxLatencyInput.type = 'number';
   maxLatencyInput.step = 0.05;
   maxLatencyInput.classList.add('config-input');
-  maxLatencyInput.value = 0.5;
+  maxLatencyInput.value = 0.25;
   maxLatencyInput.min = 0;
   maxLatencyInput.max = 20;
   maxLatencyInput.addEventListener('change', function () {
@@ -54,7 +54,7 @@ function setupUI () {
     for (const player of players) {
       player.configure('streaming.liveSyncMaxLatency', value);
     }
-  })
+  });
   configContainer.appendChild(maxLatencyLabel);
   configContainer.appendChild(maxLatencyInput);
   document.body.appendChild(configContainer);
