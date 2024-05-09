@@ -57,6 +57,21 @@ function setupUI () {
   });
   configContainer.appendChild(maxLatencyLabel);
   configContainer.appendChild(maxLatencyInput);
+  if (window.MediaSource || window.ManagedMediaSource) {
+    const mimeType = 'application/vnd.apple.mpegurl'
+    const canPlayHLS = document.createElement('video').canPlayType(mimeType) != '';
+    if (canPlayHLS) {
+      const nativeHlsLabel = document.createElement('label');
+      nativeHlsLabel.textContent = 'Use native HLS support';
+      const nativeHlsInput = document.createElement('input');
+      nativeHlsInput.id = 'native-hls-input';
+      nativeHlsInput.type = 'checkbox';
+      nativeHlsInput.classList.add('config-input');
+      configContainer.appendChild(document.createElement('br'));
+      configContainer.appendChild(nativeHlsLabel);
+      configContainer.appendChild(nativeHlsInput);
+    }
+  }
   document.body.appendChild(configContainer);
 }
 
@@ -141,7 +156,13 @@ function createPlayer(videoContainer, video, url) {
   });
   const controls = ui.getControls();
   const player = controls.getPlayer();
-  const liveSyncMaxLatency = parseInt(document.getElementById('max-latency-input').value, 10);
+  const maxLatencyInput = document.getElementById('max-latency-input');
+  const liveSyncMaxLatency = parseInt(maxLatencyInput.value, 10);
+  let useNativeHlsOnSafari = false;
+  const nativeHlsInput = document.getElementById('native-hls-input');
+  if (nativeHlsInput) {
+    useNativeHlsOnSafari = nativeHlsInput.checked;
+  }
   player.configure({
     manifest: {
       dash:{
@@ -153,7 +174,7 @@ function createPlayer(videoContainer, video, url) {
       },
     },
     streaming: {
-      useNativeHlsOnSafari: false,
+      useNativeHlsOnSafari: useNativeHlsOnSafari,
       lowLatencyMode: true,
       liveSync: true,
       liveSyncMaxLatency: liveSyncMaxLatency,
