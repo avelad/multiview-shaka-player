@@ -149,7 +149,8 @@ function loadPlayers () {
 }
 
 function createPlayer(videoContainer, video, url) {
-  const localPlayer = new shaka.Player(video);
+  const localPlayer = new shaka.Player();
+  localPlayer.attach(video);
   const ui = new shaka.ui.Overlay(localPlayer, videoContainer, video);
   ui.configure({
     customContextMenu: true,
@@ -158,10 +159,10 @@ function createPlayer(videoContainer, video, url) {
   const player = controls.getPlayer();
   const maxLatencyInput = document.getElementById('max-latency-input');
   const liveSyncMaxLatency = parseInt(maxLatencyInput.value, 10);
-  let useNativeHlsOnSafari = false;
+  let preferNativeHls = false;
   const nativeHlsInput = document.getElementById('native-hls-input');
   if (nativeHlsInput) {
-    useNativeHlsOnSafari = nativeHlsInput.checked;
+    preferNativeHls = nativeHlsInput.checked;
   }
   player.configure({
     manifest: {
@@ -174,7 +175,7 @@ function createPlayer(videoContainer, video, url) {
       },
     },
     streaming: {
-      useNativeHlsOnSafari: useNativeHlsOnSafari,
+      preferNativeHls: preferNativeHls,
       lowLatencyMode: true,
       liveSync: true,
       liveSyncMaxLatency: liveSyncMaxLatency,
