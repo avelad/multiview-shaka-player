@@ -175,6 +175,8 @@ function createPlayer(videoContainer, video, url) {
       },
     },
     streaming: {
+      bufferingGoal: 30,
+      bufferBehind: 30,
       preferNativeHls: preferNativeHls,
       lowLatencyMode: true,
       liveSync: true,
