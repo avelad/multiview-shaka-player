@@ -94,6 +94,10 @@ function setupUI () {
     }
   }
   document.body.appendChild(configContainer);
+
+  if (params.url) {
+    loadPlayers();
+  }
 }
 
 function createInput (inputsContainer, value) {
