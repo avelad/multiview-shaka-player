@@ -1,11 +1,32 @@
 let players = [];
 
+function getParams () {
+  // Read URL parameters.
+  let fields = location.search.substr(1);
+  fields = fields ? fields.split(';') : [];
+  let fragments = location.hash.substr(1);
+  fragments = fragments ? fragments.split(';') : [];
+
+  // Because they are being concatenated in this order, if both an
+  // URL fragment and an URL parameter of the same type are present
+  // the URL fragment takes precendence.
+  const combined = fields.concat(fragments);
+  const params = {};
+  for (const line of combined) {
+    const kv = line.split('=');
+    params[kv[0]] = kv.slice(1).join('=');
+  }
+  return params;
+}
+
 function setupUI () {
   const inputsContainer = document.createElement('div');
   inputsContainer.id = 'inputs-container';
   document.body.appendChild(inputsContainer);
 
-  createInput(inputsContainer);
+  const params = getParams();
+
+  createInput(inputsContainer, params.url);
 
   const buttonsContainer = document.createElement('div');
   buttonsContainer.id = 'buttons-container'
