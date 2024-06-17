@@ -166,6 +166,7 @@ function loadPlayers () {
     videoContainer.classList.add('player-container');
     const video = document.createElement('video');
     video.setAttribute('autoplay', true);
+    video.setAttribute('playsinline', '');
     video.muted = true;
     video.style.width = '100%';
     videoContainer.appendChild(video);
