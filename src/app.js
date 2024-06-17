@@ -26,7 +26,13 @@ function setupUI () {
 
   const params = getParams();
 
-  createInput(inputsContainer, params.url);
+  if (params.url) {
+    for (const url of params.url.split(',')) {
+      createInput(inputsContainer, url);
+    }
+  } else {
+    createInput(inputsContainer);
+  }
 
   const buttonsContainer = document.createElement('div');
   buttonsContainer.id = 'buttons-container'
