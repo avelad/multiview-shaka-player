@@ -79,7 +79,7 @@ function setupUI () {
   maxLatencyInput.addEventListener('change', function () {
     const value = parseFloat(maxLatencyInput.value);
     for (const player of players) {
-      player.configure('streaming.liveSyncTargetLatencyTolerance', value);
+      player.configure('streaming.liveSync.targetLatencyTolerance', value);
     }
   });
   configContainer.appendChild(maxLatencyLabel);
@@ -190,7 +190,7 @@ function createPlayer(videoContainer, video, url) {
   const controls = ui.getControls();
   const player = controls.getPlayer();
   const maxLatencyInput = document.getElementById('max-latency-input');
-  const liveSyncTargetLatencyTolerance = parseFloat(maxLatencyInput.value);
+  const targetLatencyTolerance = parseFloat(maxLatencyInput.value);
   let preferNativeHls = false;
   const nativeHlsInput = document.getElementById('native-hls-input');
   if (nativeHlsInput) {
@@ -211,9 +211,11 @@ function createPlayer(videoContainer, video, url) {
       bufferBehind: 30,
       preferNativeHls: preferNativeHls,
       lowLatencyMode: true,
-      liveSync: true,
-      liveSyncTargetLatency: 0,
-      liveSyncTargetLatencyTolerance: liveSyncTargetLatencyTolerance,
+      liveSync: {
+        enabled: true,
+        targetLatency: 0,
+        targetLatencyTolerance: targetLatencyTolerance,
+      },
     },
   });
   player.load(url.trim());
