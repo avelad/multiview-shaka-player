@@ -202,7 +202,6 @@ function createPlayer(videoContainer, video, url) {
         clockSyncUri: 'https://time.akamai.com/?ms&iso',
       },
       hls: {
-        useSafariBehaviorForLive: false,
         liveSegmentsDelay: 1.5,
       },
     },
