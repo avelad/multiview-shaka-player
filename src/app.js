@@ -243,6 +243,10 @@ function initApp() {
     unsupportedDiv.textContent = 'Browser not supported!';
     document.body.appendChild(unsupportedDiv);
   }
+  const shakaPlayerversion = document.createElement('div');
+  shakaPlayerversion.id = 'shaka-player-version';
+  shakaPlayerversion.textContent = 'Shaka Player: ' + shaka.Player.version;
+  document.body.appendChild(shakaPlayerversion);
 }
 
 

@@ -109,6 +109,10 @@ body {
   margin-top: 15px;
 }
 
+#shaka-player-version {
+  margin-top: 15px;
+}
+
 label + .config-input {
   margin-left: 10px;
 }
