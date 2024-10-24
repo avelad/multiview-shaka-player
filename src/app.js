@@ -196,6 +196,30 @@ function createPlayer(videoContainer, video, url) {
   if (nativeHlsInput) {
     preferNativeHls = nativeHlsInput.checked;
   }
+  const errorElement = document.createElement('div');
+  errorElement.classList.add('player-error');
+
+  let currentErrorSeverity = null;
+
+  const handleError_ = (error) => {
+    console.error(error);
+    let severity = error.severity;
+    if (severity == null || error.severity == undefined) {
+      // It's not a shaka.util.Error. Treat it as very severe, since those
+      // should not be happening.
+      severity = shaka.util.Error.Severity.CRITICAL;
+    }
+    const message = error.message || ('Error code ' + error.code);
+    if (!errorElement.parentElement ||
+        severity > currentErrorSeverity) {
+      errorElement.textContent = message;
+      currentErrorSeverity = severity;
+      if (!errorElement.parentElement) {
+        videoContainer.append(errorElement);
+      }
+    }
+  };
+
   player.configure({
     manifest: {
       dash:{
@@ -217,10 +241,17 @@ function createPlayer(videoContainer, video, url) {
       },
     },
   });
-  player.load(url.trim());
+  player.load(url.trim()).catch((error) => {
+    handleError_(error);
+  });
   player.addEventListener('loaded', () => {
     video.play();
   }, {once: true});
+  player.addEventListener('error', (error) => {
+    if (error && error.detail) {
+      handleError_(error.detail);
+    }
+  });
   return player;
 }
 

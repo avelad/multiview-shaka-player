@@ -98,6 +98,15 @@ body {
   width: 80%;
 }
 
+.player-error {
+  background-color: red;
+  left: 0px;
+  position: absolute;
+  right: 0px;
+  text-align: center;
+  top: 0px;
+}
+
 .many-player-containers {
   display: grid;
   grid-auto-rows: minmax(100px, auto);
