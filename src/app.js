@@ -234,6 +234,7 @@ function createPlayer(videoContainer, video, url) {
       bufferBehind: 30,
       preferNativeHls: preferNativeHls,
       lowLatencyMode: true,
+      minTimeBetweenRecoveries: 1,
       liveSync: {
         enabled: true,
         targetLatency: 0,
