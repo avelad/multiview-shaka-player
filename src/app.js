@@ -242,6 +242,13 @@ function createPlayer(videoContainer, video, url) {
       },
     },
   });
+  if (nativeHlsInput && !nativeHlsInput.checked) {
+    player.configure({
+      ads: {
+        supportsMultipleMediaElements: false,
+      },
+    });
+  }
   player.load(url.trim()).catch((error) => {
     handleError_(error);
   });
