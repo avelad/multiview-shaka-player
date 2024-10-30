@@ -249,7 +249,11 @@ function createPlayer(videoContainer, video, url) {
       },
     });
   }
-  player.load(url.trim()).catch((error) => {
+  player.load(url.trim()).then(() => {
+    if (player.isAudioOnly()) {
+      video.poster = 'https://shaka-player-demo.appspot.com/assets/audioOnly.gif';
+    }
+  }).catch((error) => {
     handleError_(error);
   });
   player.addEventListener('loaded', () => {
