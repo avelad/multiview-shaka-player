@@ -186,6 +186,7 @@ function createPlayer(videoContainer, video, url) {
   const ui = new shaka.ui.Overlay(localPlayer, videoContainer, video);
   ui.configure({
     customContextMenu: true,
+    preferVideoFullScreenInVisionOS: true,
   });
   const controls = ui.getControls();
   const player = controls.getPlayer();
