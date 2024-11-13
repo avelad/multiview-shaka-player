@@ -187,6 +187,7 @@ function createPlayer(videoContainer, video, url) {
   ui.configure({
     customContextMenu: true,
     preferVideoFullScreenInVisionOS: true,
+    seekOnTaps: false,
   });
   const controls = ui.getControls();
   const player = controls.getPlayer();
