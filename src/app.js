@@ -102,6 +102,11 @@ function setupUI () {
       configContainer.appendChild(nativeHlsInput);
     }
   }
+  const saveStateButton = document.createElement('button');
+  saveStateButton.id = 'save-state';
+  saveStateButton.textContent = 'Update URL';
+  saveStateButton.addEventListener('click', remakeHash);
+  configContainer.appendChild(saveStateButton);
   document.body.appendChild(configContainer);
 
   if (params.url) {
@@ -270,6 +275,35 @@ function createPlayer(videoContainer, video, url) {
     }
   });
   return player;
+}
+
+function remakeHash() {
+  const params = [];
+
+  const nativeHlsInput = document.getElementById('native-hls-input');
+  if (nativeHlsInput && nativeHlsInput.checked) {
+    params.push('hls');
+  }
+
+  const urls = [];
+  const inputs = document.querySelectorAll('input[type=url]');
+  for (const input of inputs) {
+    const url = input.value;
+    if (!url) {
+      continue;
+    }
+    urls.push(url);
+  }
+  if (urls.length) {
+    params.push('url=' + urls.join(','));
+  }
+
+  const state = null;
+  const title = '';
+  const hash = params.length ? '#' + params.join(';') : '';
+  // Calling history.replaceState can change the URL or hash of the page
+  // without actually triggering any changes
+  history.replaceState(state, title, document.location.pathname + hash);
 }
 
 function initApp() {

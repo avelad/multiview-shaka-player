@@ -118,6 +118,10 @@ body {
   margin-top: 15px;
 }
 
+#save-state {
+  display: block;
+}
+
 #shaka-player-version {
   margin-top: 15px;
 }
