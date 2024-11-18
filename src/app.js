@@ -109,7 +109,7 @@ function setupUI () {
   configContainer.appendChild(saveStateButton);
   document.body.appendChild(configContainer);
 
-  if (params.url) {
+  if (params.url && 'play' in params) {
     loadPlayers();
   }
 }
@@ -296,6 +296,10 @@ function remakeHash() {
   }
   if (urls.length) {
     params.push('url=' + urls.join(','));
+
+    if (players.length) {
+      params.push('play');
+    }
   }
 
   const state = null;
