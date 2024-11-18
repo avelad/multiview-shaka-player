@@ -94,6 +94,9 @@ function setupUI () {
       nativeHlsInput.id = 'native-hls-input';
       nativeHlsInput.type = 'checkbox';
       nativeHlsInput.classList.add('config-input');
+      if ('hls' in params) {
+        nativeHlsInput.checked = true;
+      }
       configContainer.appendChild(document.createElement('br'));
       configContainer.appendChild(nativeHlsLabel);
       configContainer.appendChild(nativeHlsInput);
