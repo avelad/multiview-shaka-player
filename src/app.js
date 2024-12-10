@@ -274,13 +274,6 @@ function createPlayer(videoContainer, video, url) {
       },
     },
   });
-  if (nativeHlsInput && !nativeHlsInput.checked) {
-    player.configure({
-      ads: {
-        supportsMultipleMediaElements: false,
-      },
-    });
-  }
   player.load(url.trim()).then(() => {
     if (player.isAudioOnly()) {
       video.poster = 'https://shaka-player-demo.appspot.com/assets/audioOnly.gif';
