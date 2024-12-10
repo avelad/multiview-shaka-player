@@ -215,6 +215,7 @@ function createPlayer(videoContainer, video, url) {
   });
   const controls = ui.getControls();
   const player = controls.getPlayer();
+  const adManager = player.getAdManager();
   const maxLatencyInput = document.getElementById('max-latency-input');
   const targetLatencyTolerance = parseFloat(maxLatencyInput.value);
   let preferNativeHls = false;
@@ -231,20 +232,23 @@ function createPlayer(videoContainer, video, url) {
   errorElement.classList.add('player-error');
 
   let currentErrorSeverity = null;
+  let currentErrorName = null;
 
-  const handleError_ = (error) => {
-    console.error(error);
+  const handleError_ = (error, name) => {
+    console.error(name, error);
     let severity = error.severity;
     if (severity == null || error.severity == undefined) {
       // It's not a shaka.util.Error. Treat it as very severe, since those
       // should not be happening.
       severity = shaka.util.Error.Severity.CRITICAL;
     }
-    const message = error.message || ('Error code ' + error.code);
+    const message = name + (error.message || ('Error code ' + error.code));
     if (!errorElement.parentElement ||
-        severity > currentErrorSeverity) {
+        severity > currentErrorSeverity ||
+        (!name && name != currentErrorName)) {
       errorElement.textContent = message;
       currentErrorSeverity = severity;
+      currentErrorName = name;
       if (!errorElement.parentElement) {
         videoContainer.append(errorElement);
       }
@@ -279,14 +283,19 @@ function createPlayer(videoContainer, video, url) {
       video.poster = 'https://shaka-player-demo.appspot.com/assets/audioOnly.gif';
     }
   }).catch((error) => {
-    handleError_(error);
+    handleError_(error, '');
   });
   player.addEventListener('loaded', () => {
     video.play();
   }, {once: true});
   player.addEventListener('error', (error) => {
     if (error && error.detail) {
-      handleError_(error.detail);
+      handleError_(error.detail, '');
+    }
+  });
+  adManager.addEventListener('ad-error', (error) => {
+    if (error && error.originalEvent && error.originalEvent.detail) {
+      handleError_(error.originalEvent.detail, 'AD: ');
     }
   });
   return player;
