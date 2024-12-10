@@ -85,8 +85,8 @@ function setupUI () {
   configContainer.appendChild(maxLatencyLabel);
   configContainer.appendChild(maxLatencyInput);
   if (window.MediaSource || window.ManagedMediaSource) {
-    const mimeType = 'application/vnd.apple.mpegurl'
-    const canPlayHLS = document.createElement('video').canPlayType(mimeType) != '';
+    const hlsMimeType = 'application/vnd.apple.mpegurl'
+    const canPlayHLS = document.createElement('video').canPlayType(hlsMimeType) != '';
     if (canPlayHLS) {
       const nativeHlsLabel = document.createElement('label');
       nativeHlsLabel.textContent = 'Use native HLS support';
@@ -100,6 +100,22 @@ function setupUI () {
       configContainer.appendChild(document.createElement('br'));
       configContainer.appendChild(nativeHlsLabel);
       configContainer.appendChild(nativeHlsInput);
+    }
+    const dashMimeType = 'application/dash+xml'
+    const canPlayDASH = document.createElement('video').canPlayType(dashMimeType) != '';
+    if (canPlayDASH) {
+      const nativeDashLabel = document.createElement('label');
+      nativeDashLabel.textContent = 'Use native DASH support';
+      const nativeDashInput = document.createElement('input');
+      nativeDashInput.id = 'native-dash-input';
+      nativeDashInput.type = 'checkbox';
+      nativeDashInput.classList.add('config-input');
+      if ('dash' in params) {
+        nativeDashInput.checked = true;
+      }
+      configContainer.appendChild(document.createElement('br'));
+      configContainer.appendChild(nativeDashLabel);
+      configContainer.appendChild(nativeDashInput);
     }
   }
   const saveStateButton = document.createElement('button');
@@ -206,6 +222,11 @@ function createPlayer(videoContainer, video, url) {
   if (nativeHlsInput) {
     preferNativeHls = nativeHlsInput.checked;
   }
+  let preferNativeDash = false;
+  const nativeDashInput = document.getElementById('native-dash-input');
+  if (nativeDashInput) {
+    preferNativeDash = nativeDashInput.checked;
+  }
   const errorElement = document.createElement('div');
   errorElement.classList.add('player-error');
 
@@ -242,6 +263,7 @@ function createPlayer(videoContainer, video, url) {
     streaming: {
       bufferingGoal: 30,
       bufferBehind: 30,
+      preferNativeDash: preferNativeDash,
       preferNativeHls: preferNativeHls,
       lowLatencyMode: true,
       minTimeBetweenRecoveries: 1,
@@ -283,6 +305,11 @@ function remakeHash() {
   const nativeHlsInput = document.getElementById('native-hls-input');
   if (nativeHlsInput && nativeHlsInput.checked) {
     params.push('hls');
+  }
+
+  const nativeDashInput = document.getElementById('native-dash-input');
+  if (nativeDashInput && nativeDashInput.checked) {
+    params.push('dash');
   }
 
   const urls = [];
