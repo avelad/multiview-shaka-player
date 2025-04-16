@@ -162,7 +162,7 @@ function updateTime (element) {
 function unloadPlayers () {
   while (players.length) {
     const player = players.pop();
-    player.destroy();
+    player.destroy(true);
   }
   const playersContainer = document.getElementById('players-container');
   while (playersContainer.firstChild){
@@ -171,14 +171,8 @@ function unloadPlayers () {
 }
 
 function loadPlayers () {
-  while (players.length) {
-    const player = players.pop();
-    player.destroy();
-  }
+  unloadPlayers();
   const playersContainer = document.getElementById('players-container');
-  while (playersContainer.firstChild){
-    playersContainer.removeChild(playersContainer.firstChild);
-  }
   const inputs = document.querySelectorAll('input[type=url]');
   for (const input of inputs) {
     const url = input.value;
@@ -211,7 +205,7 @@ function createPlayer(videoContainer, video, url) {
   ui.configure({
     customContextMenu: true,
     preferVideoFullScreenInVisionOS: true,
-    seekOnTaps: false,
+    castReceiverAppId: '07AEE832',
   });
   const controls = ui.getControls();
   const player = controls.getPlayer();
@@ -298,7 +292,7 @@ function createPlayer(videoContainer, video, url) {
       handleError_(error.originalEvent.detail, 'AD: ');
     }
   });
-  return player;
+  return ui;
 }
 
 function remakeHash() {
@@ -349,8 +343,9 @@ function initApp() {
     window.addEventListener('visibilitychange', function () {
       if (!document.hidden) {
         for (const player of players) {
-          if (player.isLive() && player.getMediaElement().muted) {
-            player.goToLive();
+          const localPlayer = player.getControls().getPlayer();
+          if (localPlayer.isLive() && localPlayer.getMediaElement().muted) {
+            localPlayer.goToLive();
           }
         }
       }
