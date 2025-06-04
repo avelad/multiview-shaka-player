@@ -249,6 +249,7 @@ function createPlayer(videoContainer, video, url) {
     }
   };
 
+  const languages = navigator.languages || ['en-us'];
   player.configure({
     manifest: {
       dash:{
@@ -271,6 +272,8 @@ function createPlayer(videoContainer, video, url) {
         targetLatencyTolerance: targetLatencyTolerance,
       },
     },
+    preferredAudioLanguage: languages[0],
+    preferredTextLanguage: languages[0],
   });
   player.load(url.trim()).then(() => {
     if (player.isAudioOnly()) {
