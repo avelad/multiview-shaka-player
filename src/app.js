@@ -189,7 +189,7 @@ function loadPlayers () {
     video.style.width = '100%';
     videoContainer.appendChild(video);
     playersContainer.appendChild(videoContainer);
-    players.push(createPlayer(videoContainer, video, url));
+    players.push(createPlayer(videoContainer, video, url, inputs.length));
   }
   if (players.length > 1) {
     playersContainer.classList.add('many-player-containers');
@@ -198,7 +198,7 @@ function loadPlayers () {
   }
 }
 
-function createPlayer(videoContainer, video, url) {
+function createPlayer(videoContainer, video, url, numberOfInputs) {
   const localPlayer = new shaka.Player();
   localPlayer.attach(video);
   const ui = new shaka.ui.Overlay(localPlayer, videoContainer, video);
@@ -206,6 +206,7 @@ function createPlayer(videoContainer, video, url) {
     customContextMenu: true,
     preferVideoFullScreenInVisionOS: true,
     castReceiverAppId: '07AEE832',
+    enableKeyboardPlaybackControlsInWindow: numberOfInputs === 1,
   });
   const controls = ui.getControls();
   const player = controls.getPlayer();
