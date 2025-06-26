@@ -204,7 +204,6 @@ function createPlayer(videoContainer, video, url, numberOfInputs) {
   const ui = new shaka.ui.Overlay(localPlayer, videoContainer, video);
   ui.configure({
     customContextMenu: true,
-    preferVideoFullScreenInVisionOS: true,
     castReceiverAppId: '07AEE832',
     enableKeyboardPlaybackControlsInWindow: numberOfInputs === 1,
   });
@@ -255,9 +254,6 @@ function createPlayer(videoContainer, video, url, numberOfInputs) {
     manifest: {
       dash:{
         clockSyncUri: 'https://time.akamai.com/?ms&iso',
-      },
-      hls: {
-        liveSegmentsDelay: 2,
       },
     },
     streaming: {
