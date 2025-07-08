@@ -131,10 +131,46 @@ function setupUI () {
   configContainer.appendChild(document.createElement('br'));
   configContainer.appendChild(forceVrLabel);
   configContainer.appendChild(forceVrInput);
+  const defaultVrProjectionModeLabel = document.createElement('label');
+  defaultVrProjectionModeLabel.textContent = 'The default VR projection mode';
+  const defaultVrProjectionModeSelect = document.createElement('select');
+  defaultVrProjectionModeSelect.id = 'vrProjectionMode';
+  defaultVrProjectionModeSelect.classList.add('config-input');
+  const vrProjectionModes = [
+    'equirectangular',
+    'halfequirectangular',
+    'cubemap',
+  ];
+  let defaultVrProjectionMode = vrProjectionModes[0];
+  if (params.defaultVrProjectionMode) {
+    defaultVrProjectionMode = params.defaultVrProjectionMode;
+  }
+  for (const vrProjectionMode of vrProjectionModes) {
+    const option = document.createElement('option');
+    option.value = vrProjectionMode;
+    option.label = vrProjectionMode;
+    if (vrProjectionMode == defaultVrProjectionMode) {
+      option.setAttribute('selected', '');
+    }
+    defaultVrProjectionModeSelect.appendChild(option);
+  }
+  defaultVrProjectionModeSelect.addEventListener('change', function () {
+    const value = defaultVrProjectionModeSelect.value;
+    for (const player of players) {
+      player.configure({
+        defaultVrProjectionMode: value,
+      });
+    }
+  });
+  configContainer.appendChild(document.createElement('br'));
+  configContainer.appendChild(defaultVrProjectionModeLabel);
+  configContainer.appendChild(defaultVrProjectionModeSelect);
+
   const saveStateButton = document.createElement('button');
   saveStateButton.id = 'save-state';
   saveStateButton.textContent = 'Update URL';
   saveStateButton.addEventListener('click', remakeHash);
+  configContainer.appendChild(document.createElement('br'));
   configContainer.appendChild(saveStateButton);
   document.body.appendChild(configContainer);
 
@@ -220,12 +256,17 @@ function createPlayer(videoContainer, video, url, numberOfInputs) {
   if (forceVrInput) {
     displayInVrMode = forceVrInput.checked;
   }
+  let defaultVrProjectionMode = 'equirectangular';
+  const defaultVrProjectionModeSelect = document.getElementById('vrProjectionMode');
+  if (defaultVrProjectionModeSelect) {
+    defaultVrProjectionMode = defaultVrProjectionModeSelect.value;
+  }
   ui.configure({
     customContextMenu: true,
     castReceiverAppId: '07AEE832',
     enableKeyboardPlaybackControlsInWindow: numberOfInputs === 1,
     displayInVrMode: displayInVrMode,
-    defaultVrProjectionMode: 'equirectangular',
+    defaultVrProjectionMode: defaultVrProjectionMode,
   });
   const controls = ui.getControls();
   const player = controls.getPlayer();
@@ -330,6 +371,12 @@ function remakeHash() {
   const forceVrInput = document.getElementById('force-vr-input');
   if (forceVrInput && forceVrInput.checked) {
     params.push('vr');
+  }
+
+  const defaultVrProjectionModeSelect = document.getElementById('vrProjectionMode');
+  if (defaultVrProjectionModeSelect &&
+      defaultVrProjectionModeSelect.value != 'equirectangular') {
+    params.push('defaultVrProjectionMode=' + defaultVrProjectionModeSelect.value);
   }
 
   const urls = [];
