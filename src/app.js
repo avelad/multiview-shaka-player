@@ -128,6 +128,14 @@ function setupUI () {
   if ('vr' in params) {
     forceVrInput.checked = true;
   }
+  forceVrInput.addEventListener('change', function () {
+    const value = forceVrInput.checked;
+    for (const player of players) {
+      player.configure({
+        displayInVrMode: value,
+      });
+    }
+  });
   configContainer.appendChild(document.createElement('br'));
   configContainer.appendChild(forceVrLabel);
   configContainer.appendChild(forceVrInput);
