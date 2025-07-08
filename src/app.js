@@ -118,6 +118,18 @@ function setupUI () {
       configContainer.appendChild(nativeDashInput);
     }
   }
+  const forceVrLabel = document.createElement('label');
+  forceVrLabel.textContent = 'Treat content like VR';
+  const forceVrInput = document.createElement('input');
+  forceVrInput.id = 'force-vr-input';
+  forceVrInput.type = 'checkbox';
+  forceVrInput.classList.add('config-input');
+  if ('vr' in params) {
+    forceVrInput.checked = true;
+  }
+  configContainer.appendChild(document.createElement('br'));
+  configContainer.appendChild(forceVrLabel);
+  configContainer.appendChild(forceVrInput);
   const saveStateButton = document.createElement('button');
   saveStateButton.id = 'save-state';
   saveStateButton.textContent = 'Update URL';
@@ -202,10 +214,17 @@ function createPlayer(videoContainer, video, url, numberOfInputs) {
   const localPlayer = new shaka.Player();
   localPlayer.attach(video);
   const ui = new shaka.ui.Overlay(localPlayer, videoContainer, video);
+  let displayInVrMode = false;
+  const forceVrInput = document.getElementById('force-vr-input');
+  if (forceVrInput) {
+    displayInVrMode = forceVrInput.checked;
+  }
   ui.configure({
     customContextMenu: true,
     castReceiverAppId: '07AEE832',
     enableKeyboardPlaybackControlsInWindow: numberOfInputs === 1,
+    displayInVrMode: displayInVrMode,
+    defaultVrProjectionMode: 'equirectangular',
   });
   const controls = ui.getControls();
   const player = controls.getPlayer();
@@ -305,6 +324,11 @@ function remakeHash() {
   const nativeDashInput = document.getElementById('native-dash-input');
   if (nativeDashInput && nativeDashInput.checked) {
     params.push('dash');
+  }
+
+  const forceVrInput = document.getElementById('force-vr-input');
+  if (forceVrInput && forceVrInput.checked) {
+    params.push('vr');
   }
 
   const urls = [];
