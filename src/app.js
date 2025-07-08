@@ -79,7 +79,8 @@ function setupUI () {
   maxLatencyInput.addEventListener('change', function () {
     const value = parseFloat(maxLatencyInput.value);
     for (const player of players) {
-      player.configure('streaming.liveSync.targetLatencyTolerance', value);
+      const localPlayer = player.getControls().getPlayer();
+      localPlayer.configure('streaming.liveSync.targetLatencyTolerance', value);
     }
   });
   configContainer.appendChild(maxLatencyLabel);
