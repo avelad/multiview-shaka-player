@@ -321,8 +321,11 @@ function createPlayer(videoContainer, video, url, numberOfInputs) {
   const languages = navigator.languages || ['en-us'];
   player.configure({
     manifest: {
-      dash:{
+      dash: {
         clockSyncUri: 'https://time.akamai.com/?ms&iso',
+      },
+      hls: {
+        sequenceMode: false,
       },
     },
     streaming: {
