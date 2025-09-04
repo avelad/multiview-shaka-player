@@ -118,6 +118,18 @@ function setupUI () {
       configContainer.appendChild(nativeDashLabel);
       configContainer.appendChild(nativeDashInput);
     }
+    const hlsSequenceModeLabel = document.createElement('label');
+    hlsSequenceModeLabel.textContent = 'Use sequence mode in HLS MSE';
+    const hlsSequenceModeInput = document.createElement('input');
+    hlsSequenceModeInput.id = 'hls-sequence-mode';
+    hlsSequenceModeInput.type = 'checkbox';
+    hlsSequenceModeInput.classList.add('config-input');
+    if ('hlssequencemode' in params) {
+      hlsSequenceModeInput.checked = true;
+    }
+    configContainer.appendChild(document.createElement('br'));
+    configContainer.appendChild(hlsSequenceModeLabel);
+    configContainer.appendChild(hlsSequenceModeInput);
   }
   const forceVrLabel = document.createElement('label');
   forceVrLabel.textContent = 'Treat content like VR';
@@ -294,6 +306,12 @@ function createPlayer(videoContainer, video, url, numberOfInputs) {
   const errorElement = document.createElement('div');
   errorElement.classList.add('player-error');
 
+  let hlsSequenceMode = true;
+  const hlsSequenceModeInput = document.getElementById('hls-sequence-mode');
+  if (hlsSequenceModeInput) {
+    hlsSequenceMode = hlsSequenceModeInput.checked;
+  }
+
   let currentErrorSeverity = null;
   let currentErrorName = null;
 
@@ -325,7 +343,7 @@ function createPlayer(videoContainer, video, url, numberOfInputs) {
         clockSyncUri: 'https://time.akamai.com/?ms&iso',
       },
       hls: {
-        sequenceMode: false,
+        sequenceMode: hlsSequenceMode,
       },
     },
     streaming: {
@@ -377,6 +395,11 @@ function remakeHash() {
   const nativeDashInput = document.getElementById('native-dash-input');
   if (nativeDashInput && nativeDashInput.checked) {
     params.push('dash');
+  }
+
+  const hlsSequenceModeInput = document.getElementById('hls-sequence-mode');
+  if (hlsSequenceModeInput && hlsSequenceModeInput.checked) {
+    params.push('hlssequencemode');
   }
 
   const forceVrInput = document.getElementById('force-vr-input');
