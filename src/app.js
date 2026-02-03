@@ -282,7 +282,6 @@ function createPlayer(videoContainer, video, url, numberOfInputs) {
     defaultVrProjectionMode = defaultVrProjectionModeSelect.value;
   }
   ui.configure({
-    customContextMenu: true,
     castReceiverAppId: '07AEE832',
     enableKeyboardPlaybackControlsInWindow: numberOfInputs === 1,
     displayInVrMode: displayInVrMode,
