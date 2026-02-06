@@ -118,6 +118,18 @@ function setupUI () {
       configContainer.appendChild(nativeDashLabel);
       configContainer.appendChild(nativeDashInput);
     }
+    const dashSequenceModeLabel = document.createElement('label');
+    dashSequenceModeLabel.textContent = 'Use sequence mode in DASH MSE';
+    const dashSequenceModeInput = document.createElement('input');
+    dashSequenceModeInput.id = 'dash-sequence-mode';
+    dashSequenceModeInput.type = 'checkbox';
+    dashSequenceModeInput.classList.add('config-input');
+    if ('dashsequencemode' in params) {
+      dashSequenceModeInput.checked = true;
+    }
+    configContainer.appendChild(document.createElement('br'));
+    configContainer.appendChild(dashSequenceModeLabel);
+    configContainer.appendChild(dashSequenceModeInput);
     const hlsSequenceModeLabel = document.createElement('label');
     hlsSequenceModeLabel.textContent = 'Use sequence mode in HLS MSE';
     const hlsSequenceModeInput = document.createElement('input');
@@ -305,6 +317,12 @@ function createPlayer(videoContainer, video, url, numberOfInputs) {
   const errorElement = document.createElement('div');
   errorElement.classList.add('player-error');
 
+  let dashSequenceMode = true;
+  const dashSequenceModeInput = document.getElementById('dash-sequence-mode');
+  if (dashSequenceModeInput) {
+    dashSequenceMode = dashSequenceModeInput.checked;
+  }
+
   let hlsSequenceMode = true;
   const hlsSequenceModeInput = document.getElementById('hls-sequence-mode');
   if (hlsSequenceModeInput) {
@@ -340,6 +358,7 @@ function createPlayer(videoContainer, video, url, numberOfInputs) {
     manifest: {
       dash: {
         clockSyncUri: 'https://time.akamai.com/?ms&iso',
+        sequenceMode: dashSequenceMode,
       },
       hls: {
         sequenceMode: hlsSequenceMode,
@@ -360,6 +379,7 @@ function createPlayer(videoContainer, video, url, numberOfInputs) {
     preferredAudioLanguage: languages[0],
     preferredTextLanguage: languages[0],
   });
+  console.log(player.getConfiguration())
   player.load(url.trim()).then(() => {
     if (player.isAudioOnly()) {
       video.poster = 'https://shaka-player-demo.appspot.com/assets/audioOnly.gif';
@@ -394,6 +414,11 @@ function remakeHash() {
   const nativeDashInput = document.getElementById('native-dash-input');
   if (nativeDashInput && nativeDashInput.checked) {
     params.push('dash');
+  }
+
+  const dashSequenceModeInput = document.getElementById('dash-sequence-mode');
+  if (dashSequenceModeInput && dashSequenceModeInput.checked) {
+    params.push('dashsequencemode');
   }
 
   const hlsSequenceModeInput = document.getElementById('hls-sequence-mode');
