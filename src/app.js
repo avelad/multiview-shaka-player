@@ -376,8 +376,13 @@ function createPlayer(videoContainer, video, url, numberOfInputs) {
         targetLatencyTolerance: targetLatencyTolerance,
       },
     },
-    preferredAudioLanguage: languages[0],
-    preferredTextLanguage: languages[0],
+    preferredAudio: languages.map((l) => ({
+      language: l,
+      role: '',
+      label: '',
+      channelCount: 2,
+      codec: '',
+    })),
   });
   console.log(player.getConfiguration())
   player.load(url.trim()).then(() => {
