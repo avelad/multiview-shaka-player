@@ -387,7 +387,7 @@ function createPlayer(videoContainer, video, url, numberOfInputs) {
   console.log(player.getConfiguration())
   player.load(url.trim()).then(() => {
     if (player.isAudioOnly()) {
-      video.poster = 'https://shaka-player-demo.appspot.com/assets/audioOnly.gif';
+      video.poster = 'https://shaka-project.github.io/shaka-player/demo/poster-audio.gif';
     }
   }).catch((error) => {
     handleError_(error, '');
